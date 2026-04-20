@@ -82,6 +82,7 @@
 
 ### v1.10.0 — 表面同步、运营工作流与 ECC 2.0 Alpha（2026年4月）
 
+- **🧭 `feature-workflow` 正式加入主入口** —— 面向 Codex 与兼容斜杠命令的 harness 的可复用功能交付流程；会按顺序依次收集 `Feature request`、`Current context`、`Constraints`，先规划，再实现，并在审查与验证后闭环收口。
 - **公共表面已与真实仓库同步** —— 元数据、目录数量、插件清单以及安装文档现在都与实际开源表面保持一致。
 - **运营与外向型工作流扩展** —— `brand-voice`、`social-graph-ranker`、`customer-billing-ops`、`google-workspace-ops` 等运营型 skill 已纳入同一系统。
 - **媒体与发布工具补齐** —— `manim-video`、`remotion-video-creation` 以及社媒发布能力让技术讲解和发布流程直接在同一仓库内完成。
@@ -157,8 +158,12 @@ npx ecc-install typescript
 # 尝试一个命令（插件安装使用命名空间形式）
 /ecc:plan "添加用户认证"
 
+# 新增功能时，直接走完整交付流程
+/ecc:feature-workflow
+
 # 手动安装（选项2）使用简短形式：
 # /plan "添加用户认证"
+# /feature-workflow
 
 # 查看可用命令
 /plugin list everything-claude-code@everything-claude-code
@@ -643,6 +648,99 @@ export ECC_DISABLED_MCPS="github,context7,exa,playwright,sequential-thinking,mem
 ECC 托管的安装程序和 Codex 同步流程将跳过或移除这些服务，避免重复添加。
 
 **重要提示**：将配置中的 `YOUR_*_HERE` 占位符替换为你真实的 API 密钥。
+
+---
+
+## 🧭 feature-workflow
+
+`feature-workflow` 是 ECC 面向“新增一个功能”场景的标准交付通道。它把需求澄清、规划、测试先行实现、审查、验证和防重复犯错串成一条可复用闭环，不需要你每次手工拼 workflow。
+
+### ✨ 它会做什么
+
+- 按顺序逐块收集输入：`Feature request` → `Current context` → `Constraints`
+- 在追问前先读 repo，尽量不问仓库里已经能确认的事实
+- 在写代码前先执行 `plan` 风格的规划
+- 实现阶段交给 `tdd-workflow`，先写失败测试，再做最小实现
+- 复杂任务下会先提示你是否值得启用多 agent，而不是默认强开
+- 自动进入 `code-review` 与 `verification-loop`，形成“检查 → 反馈 → 修改 → 再检查”的闭环
+- 把 handoff 和已知坑位沉淀到 `.claude/plan/`，降低同类错误再次发生的概率
+
+### 🧰 如何安装
+
+你**不需要单独安装** `feature-workflow`。它随 ECC 一起分发。
+
+**Claude Code / 兼容斜杠命令的环境**
+
+```text
+/plugin install everything-claude-code@everything-claude-code
+```
+
+或使用开源安装脚本：
+
+```bash
+npm install
+./install.sh --profile full
+```
+
+**Codex CLI / Codex App**
+
+```bash
+npm install
+bash scripts/sync-ecc-to-codex.sh
+```
+
+完成后，`feature-workflow` 会自动出现在 ECC 的正常 skill / command 表面里，不需要额外装一个单独包。
+
+### 🚀 如何使用
+
+**Claude Code / 兼容斜杠命令的环境**
+
+插件安装后使用命名空间形式：
+
+```text
+/ecc:feature-workflow
+```
+
+手动安装时可直接使用短命令：
+
+```text
+/feature-workflow
+```
+
+**Codex**
+
+```text
+Use the `feature-workflow` skill.
+Communicate in Chinese.
+
+Feature request:
+[描述要做什么功能]
+
+Current context:
+[描述相关文件、当前行为、已有实现、报错或限制]
+
+Constraints:
+[描述性能、兼容性、交付时间或不能改动的边界]
+```
+
+如果你一开始信息不完整，也可以这样用：
+
+```text
+Use the `feature-workflow` skill.
+Communicate in Chinese.
+Do not write code yet.
+First collect missing inputs one block at a time and stop after each answer.
+```
+
+### 💬 它会怎么和你交互
+
+默认会按这个顺序一个一个问：
+
+1. `Feature request`
+2. `Current context`
+3. `Constraints`
+
+它不会一上来把整套 intake 模板一次性甩给你，除非你明确要求“给我完整模板”。
 
 ---
 
