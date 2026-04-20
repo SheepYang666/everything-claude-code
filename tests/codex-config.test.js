@@ -76,9 +76,14 @@ else failed++;
 
 if (
   test('reference config wires the sample Codex role files', () => {
-    for (const roleFile of ['explorer.toml', 'reviewer.toml', 'docs-researcher.toml']) {
+    const expectedRoles = [
+      ['explorer.toml', 'ecc_explorer'],
+      ['reviewer.toml', 'ecc_reviewer'],
+      ['docs-researcher.toml', 'ecc_docs_researcher'],
+    ];
+
+    for (const [roleFile, roleSection] of expectedRoles) {
       const rolePath = path.join(codexAgentsDir, roleFile);
-      const roleSection = roleFile.replace(/\.toml$/, '').replace(/-/g, '_');
       const sectionBody = getTomlSection(config, `agents.${roleSection}`);
 
       assert.ok(fs.existsSync(rolePath), `Expected role config to exist: ${roleFile}`);

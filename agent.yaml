@@ -65,6 +65,7 @@ skills:
   - eval-harness
   - exa-search
   - fal-ai-media
+  - feature-workflow
   - flutter-dart-code-review
   - foundation-models-on-device
   - frontend-patterns
@@ -160,6 +161,7 @@ commands:
   - eval
   - evolve
   - feature-dev
+  - feature-workflow
   - flutter-build
   - flutter-review
   - flutter-test

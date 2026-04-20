@@ -29,9 +29,6 @@ const TABLE_PATHS = [
   'profiles.strict',
   'profiles.yolo',
   'agents',
-  'agents.explorer',
-  'agents.reviewer',
-  'agents.docs_researcher',
 ];
 const TOML_HEADER_RE = /^[ \t]*(?:\[[^[\]\n][^\]\n]*\]|\[\[[^[\]\n][^\]\n]*\]\])[ \t]*(?:#.*)?$/m;
 

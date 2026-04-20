@@ -1,0 +1,7 @@
+interface:
+  display_name: "Feature Workflow"
+  short_description: "Interactive end-to-end feature workflow with planning, TDD, review, verification, and anti-repeat checkpoints"
+  brand_color: "#0EA5E9"
+  default_prompt: "Run the full feature workflow: gather missing context, plan before coding, implement test-first, close the review/verification loop, and capture project-specific pitfalls"
+policy:
+  allow_implicit_invocation: true

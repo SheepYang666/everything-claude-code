@@ -2,6 +2,12 @@
 description: Guided feature development with codebase understanding and architecture focus
 ---
 
+# Feature Dev Command
+
+For the full interactive workflow with planning, TDD, review, verification, milestone handoffs, and project-level pitfall tracking, prefer `/feature-workflow`.
+
+Use `/feature-dev` when you want a lighter architecture-first feature flow without the full closed-loop orchestration surface.
+
 A structured feature-development workflow that emphasizes understanding existing code before writing new code.
 
 ## Phases

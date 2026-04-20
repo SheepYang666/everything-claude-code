@@ -84,6 +84,7 @@ This repo is the raw code only. The guides explain everything.
 
 ### v1.10.0 — Surface Refresh, Operator Workflows, and ECC 2.0 Alpha (Apr 2026)
 
+- **🧭 `feature-workflow`** — New reusable feature-delivery lane for Codex and slash-compatible harnesses. It collects `Feature request`, `Current context`, and `Constraints` one block at a time, plans before code, asks before enabling multi-agent splits, then closes the loop with review and verification.
 - **Dashboard GUI** — New Tkinter-based desktop application (`ecc_dashboard.py` or `npm run dashboard`) with dark/light theme toggle, font customization, and project logo in header and taskbar.
 - **Public surface synced to the live repo** — metadata, catalog counts, plugin manifests, and install-facing docs now match the actual OSS surface: 38 agents, 156 skills, and 72 legacy command shims.
 - **Operator and outbound workflow expansion** — `brand-voice`, `social-graph-ranker`, `connections-optimizer`, `customer-billing-ops`, `ecc-tools-cost-audit`, `google-workspace-ops`, `project-flow-ops`, and `workspace-surface-audit` round out the operator lane.
@@ -193,8 +194,6 @@ This is intentional. Anthropic marketplace/plugin installs are keyed by a canoni
 >
 > If your local Claude setup was wiped or reset, that does not mean you need to repurchase ECC. Start with `ecc list-installed`, then run `ecc doctor` and `ecc repair` before reinstalling anything. That usually restores ECC-managed files without rebuilding your setup. If the problem is account or marketplace access for ECC Tools, handle billing/account recovery separately.
 
-> If your local Claude setup was wiped or reset, that does not mean you need to repurchase ECC. Start with `ecc list-installed`, then run `ecc doctor` and `ecc repair` before reinstalling anything. That usually restores ECC-managed files without rebuilding your setup. If the problem is account or marketplace access for ECC Tools, handle billing/account recovery separately.
-
 ```bash
 # Clone the repo first
 git clone https://github.com/affaan-m/everything-claude-code.git
@@ -251,7 +250,7 @@ For manual install instructions see the README in the `rules/` folder. When copy
 /plugin list everything-claude-code@everything-claude-code
 ```
 
-**That's it!** You now have access to 48 agents, 183 skills, and 79 legacy command shims.
+**That's it!** You now have access to 48 agents, 184 skills, and 80 legacy command shims.
 
 ### Dashboard GUI
 
@@ -846,6 +845,7 @@ Not sure where to start? Use this quick reference. Skills are the canonical work
 
 | I want to... | Use this command | Agent used |
 |--------------|-----------------|------------|
+| Run the full feature workflow | `/feature-workflow` | planner + tdd-guide + code-reviewer |
 | Plan a new feature | `/ecc:plan "Add auth"` | planner |
 | Design system architecture | `/ecc:plan` + architect agent | architect |
 | Write code with tests first | `/tdd` | tdd-guide |
@@ -866,6 +866,9 @@ Slash forms below are shown because they are still the fastest familiar entrypoi
 
 **Starting a new feature:**
 ```
+/feature-workflow                             → collects `Feature request` → `Current context` → `Constraints`
+                                              → then plans, implements, reviews, verifies
+                                              → asks before enabling multi-agent splits
 /ecc:plan "Add user authentication with OAuth"
                                               → planner creates implementation blueprint
 /tdd                                          → tdd-guide enforces write-tests-first
@@ -885,6 +888,92 @@ Slash forms below are shown because they are still the fastest familiar entrypoi
 /e2e                                          → e2e-runner: critical user flow tests
 /test-coverage                                → verify 80%+ coverage
 ```
+
+---
+
+## 🧭 feature-workflow
+
+`feature-workflow` is ECC's reusable lane for turning a fuzzy feature request into a verified change set without forcing you to hand-craft the whole process every time.
+
+### ✨ What It Does
+
+- asks for missing inputs **one block at a time**: `Feature request` → `Current context` → `Constraints`
+- reads the repo before asking broad follow-up questions
+- applies `plan` discipline before code
+- hands implementation to `tdd-workflow`
+- asks before enabling multi-agent splits
+- closes the loop with `code-review` and `verification-loop`
+- records handoff notes and reusable pitfalls under `.claude/plan/`
+
+### 🧰 Installation
+
+You do **not** install `feature-workflow` separately. It ships with ECC.
+
+**Claude Code / slash-compatible installs**
+
+```text
+/plugin install everything-claude-code@everything-claude-code
+```
+
+Or use the OSS installer:
+
+```bash
+npm install
+./install.sh --profile full
+```
+
+**Codex app + CLI**
+
+```bash
+npm install && bash scripts/sync-ecc-to-codex.sh
+```
+
+That installs or syncs the skill into the normal ECC surfaces. No extra package is required for `feature-workflow`.
+
+### 🚀 How To Use It
+
+**Claude Code / slash-compatible harnesses**
+
+```text
+/feature-workflow
+```
+
+Then answer the prompts in order.
+
+**Codex**
+
+```text
+Use the `feature-workflow` skill.
+Communicate in Chinese.
+
+Feature request:
+[describe the feature]
+
+Current context:
+[describe relevant files, current behavior, errors, or limitations]
+
+Constraints:
+[describe performance, compatibility, delivery, or no-touch limits]
+```
+
+If you do not know everything up front:
+
+```text
+Use the `feature-workflow` skill.
+Communicate in Chinese.
+Do not write code yet.
+First collect missing inputs one block at a time and stop after each answer.
+```
+
+### 💬 Interaction Style
+
+By default, `feature-workflow` now asks in this order:
+
+1. `Feature request`
+2. `Current context`
+3. `Constraints`
+
+It does **not** dump the whole intake template in one shot unless you explicitly ask for a combined template.
 
 ---
 
@@ -1132,10 +1221,10 @@ Codex macOS app:
 |-----------|-------|---------|
 | Config | 1 | `.codex/config.toml` — top-level approvals/sandbox/web_search, MCP servers, notifications, profiles |
 | AGENTS.md | 2 | Root (universal) + `.codex/AGENTS.md` (Codex-specific supplement) |
-| Skills | 30 | `.agents/skills/` — SKILL.md + agents/openai.yaml per skill |
+| Skills | 35 | `.agents/skills/` — SKILL.md + agents/openai.yaml per skill |
 | MCP Servers | 6 | GitHub, Context7, Exa, Memory, Playwright, Sequential Thinking (7 with Supabase via `--update-mcp` sync) |
 | Profiles | 2 | `strict` (read-only sandbox) and `yolo` (full auto-approve) |
-| Agent Roles | 3 | `.codex/agents/` — explorer, reviewer, docs-researcher |
+| Agent Roles | 3 | `.codex/agents/` — `ecc_explorer`, `ecc_reviewer`, `ecc_docs_researcher` |
 
 ### Skills
 
@@ -1143,6 +1232,8 @@ Skills at `.agents/skills/` are auto-loaded by Codex:
 
 | Skill | Description |
 |-------|-------------|
+| agent-introspection-debugging | Diagnose and recover from agent loops, stalls, and repeated failures |
+| agent-sort | Sort ECC surfaces into repo-specific daily vs library installs |
 | api-design | REST API design patterns |
 | article-writing | Long-form writing from notes and voice references |
 | backend-patterns | API design, database, caching |
@@ -1160,6 +1251,8 @@ Skills at `.agents/skills/` are auto-loaded by Codex:
 | everything-claude-code | Development conventions and patterns for the project |
 | exa-search | Neural search via Exa MCP for web, code, company research |
 | fal-ai-media | Unified media generation for images, video, and audio |
+| feature-workflow | Interactive end-to-end feature workflow with one-block-at-a-time intake, planning, TDD, review, verification, and anti-repeat checkpoints |
+| frontend-design | Distinctive, production-grade frontend design direction |
 | frontend-patterns | React/Next.js patterns |
 | frontend-slides | HTML presentations, PPTX conversion, visual style exploration |
 | investor-materials | Decks, memos, models, and one-pagers |
@@ -1167,6 +1260,7 @@ Skills at `.agents/skills/` are auto-loaded by Codex:
 | market-research | Source-attributed market and competitor research |
 | mcp-server-patterns | Build MCP servers with Node/TypeScript SDK |
 | nextjs-turbopack | Next.js 16+ and Turbopack incremental bundling |
+| product-capability | Turn product intent into an implementation-ready capability plan |
 | security-review | Comprehensive security checklist |
 | strategic-compact | Context management |
 | tdd-workflow | Test-driven development with 80%+ coverage |
@@ -1191,9 +1285,9 @@ ECC ships three sample role configs:
 
 | Role | Purpose |
 |------|---------|
-| `explorer` | Read-only codebase evidence gathering before edits |
-| `reviewer` | Correctness, security, and missing-test review |
-| `docs_researcher` | Documentation and API verification before release/docs changes |
+| `ecc_explorer` | Read-only codebase evidence gathering before edits |
+| `ecc_reviewer` | Correctness, security, and missing-test review |
+| `ecc_docs_researcher` | Documentation and API verification before release/docs changes |
 
 ---
 
@@ -1218,8 +1312,8 @@ The configuration is automatically detected from `.opencode/opencode.json`.
 | Feature | Claude Code | OpenCode | Status |
 |---------|-------------|----------|--------|
 | Agents | PASS: 48 agents | PASS: 12 agents | **Claude Code leads** |
-| Commands | PASS: 79 commands | PASS: 31 commands | **Claude Code leads** |
-| Skills | PASS: 183 skills | PASS: 37 skills | **Claude Code leads** |
+| Commands | PASS: 80 commands | PASS: 31 commands | **Claude Code leads** |
+| Skills | PASS: 184 skills | PASS: 37 skills | **Claude Code leads** |
 | Hooks | PASS: 8 event types | PASS: 11 events | **OpenCode has more!** |
 | Rules | PASS: 29 rules | PASS: 13 instructions | **Claude Code leads** |
 | MCP Servers | PASS: 14 servers | PASS: Full | **Full parity** |
@@ -1239,11 +1333,12 @@ OpenCode's plugin system is MORE sophisticated than Claude Code with 20+ event t
 
 **Additional OpenCode events**: `file.edited`, `file.watcher.updated`, `message.updated`, `lsp.client.diagnostics`, `tui.toast.show`, and more.
 
-### Available Slash Entry Shims (31+)
+### Available Slash Entry Shims (32+)
 
 | Command | Description |
 |---------|-------------|
 | `/plan` | Create implementation plan |
+| `/feature-workflow` | Interactive feature intake, plan, TDD, review, and verify loop |
 | `/tdd` | Enforce TDD workflow |
 | `/code-review` | Review code changes |
 | `/build-fix` | Fix build errors |
@@ -1327,8 +1422,8 @@ ECC is the **first plugin to maximize every major AI coding tool**. Here's how e
 | Feature | Claude Code | Cursor IDE | Codex CLI | OpenCode |
 |---------|------------|------------|-----------|----------|
 | **Agents** | 48 | Shared (AGENTS.md) | Shared (AGENTS.md) | 12 |
-| **Commands** | 79 | Shared | Instruction-based | 31 |
-| **Skills** | 183 | Shared | 10 (native format) | 37 |
+| **Commands** | 80 | Shared | Instruction-based | 31 |
+| **Skills** | 184 | Shared | 10 (native format) | 37 |
 | **Hook Events** | 8 types | 15 types | None yet | 11 types |
 | **Hook Scripts** | 20+ scripts | 16 scripts (DRY adapter) | N/A | Plugin hooks |
 | **Rules** | 34 (common + lang) | 34 (YAML frontmatter) | Instruction-based | 13 instructions |

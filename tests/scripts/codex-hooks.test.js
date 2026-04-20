@@ -148,9 +148,12 @@ if (
       assert.ok(parsedConfig.agents);
       assert.strictEqual(parsedConfig.agents.max_threads, 6);
       assert.strictEqual(parsedConfig.agents.max_depth, 1);
-      assert.strictEqual(parsedConfig.agents.explorer.config_file, 'agents/explorer.toml');
-      assert.strictEqual(parsedConfig.agents.reviewer.config_file, 'agents/reviewer.toml');
-      assert.strictEqual(parsedConfig.agents.docs_researcher.config_file, 'agents/docs-researcher.toml');
+      assert.ok(!parsedConfig.agents.ecc_explorer, 'Expected project-local ECC roles to stay out of global config sync');
+      assert.ok(!parsedConfig.agents.ecc_reviewer, 'Expected project-local ECC roles to stay out of global config sync');
+      assert.ok(
+        !parsedConfig.agents.ecc_docs_researcher,
+        'Expected project-local ECC roles to stay out of global config sync',
+      );
       assert.ok(parsedConfig.mcp_servers.exa);
       assert.ok(parsedConfig.mcp_servers.github);
       assert.ok(parsedConfig.mcp_servers.memory);
@@ -191,7 +194,10 @@ if (
       const parsedConfig = TOML.parse(fs.readFileSync(configPath, 'utf8'));
       assert.strictEqual(parsedConfig.agents.max_threads, 6);
       assert.strictEqual(parsedConfig.agents.max_depth, 1);
-      assert.strictEqual(parsedConfig.agents.explorer.config_file, 'agents/explorer.toml');
+      assert.ok(
+        !parsedConfig.agents.ecc_explorer,
+        'Expected project-local ECC role definitions to remain out of global config sync',
+      );
     } finally {
       cleanup(homeDir);
     }

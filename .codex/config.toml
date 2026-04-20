@@ -103,18 +103,19 @@ web_search = "live"
 
 [agents]
 # Multi-agent role limits and local role definitions.
-# These map to `.codex/agents/*.toml` and mirror the repo's explorer/reviewer/docs workflow.
+# These map to `.codex/agents/*.toml` and use repo-scoped names to avoid
+# colliding with any generic global roles the user already has in `~/.codex/config.toml`.
 max_threads = 6
 max_depth = 1
 
-[agents.explorer]
+[agents.ecc_explorer]
 description = "Read-only codebase explorer for gathering evidence before changes are proposed."
 config_file = "agents/explorer.toml"
 
-[agents.reviewer]
+[agents.ecc_reviewer]
 description = "PR reviewer focused on correctness, security, and missing tests."
 config_file = "agents/reviewer.toml"
 
-[agents.docs_researcher]
+[agents.ecc_docs_researcher]
 description = "Documentation specialist that verifies APIs, framework behavior, and release notes."
 config_file = "agents/docs-researcher.toml"

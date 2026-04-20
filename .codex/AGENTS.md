@@ -18,6 +18,7 @@ Skills are auto-loaded from `.agents/skills/`. Each skill contains:
 - `agents/openai.yaml` — Codex interface metadata
 
 Available skills:
+- feature-workflow — Interactive feature workflow with context intake, planning, TDD, review, verification, and anti-repeat checkpoints
 - tdd-workflow — Test-driven development with 80%+ coverage
 - security-review — Comprehensive security checklist
 - coding-standards — Universal coding standards
@@ -70,9 +71,9 @@ Codex now supports multi-agent workflows behind the experimental `features.multi
 - Use `/agent` inside Codex CLI to inspect and steer child agents
 
 Sample role configs in this repo:
-- `.codex/agents/explorer.toml` — read-only evidence gathering
-- `.codex/agents/reviewer.toml` — correctness/security review
-- `.codex/agents/docs-researcher.toml` — API and release-note verification
+- `ecc_explorer` via `.codex/agents/explorer.toml` — read-only evidence gathering
+- `ecc_reviewer` via `.codex/agents/reviewer.toml` — correctness/security review
+- `ecc_docs_researcher` via `.codex/agents/docs-researcher.toml` — API and release-note verification
 
 ## Key Differences from Claude Code
 
