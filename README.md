@@ -845,7 +845,6 @@ Not sure where to start? Use this quick reference. Skills are the canonical work
 
 | I want to... | Use this command | Agent used |
 |--------------|-----------------|------------|
-| Run the full feature workflow | `/feature-workflow` | planner + tdd-guide + code-reviewer |
 | Plan a new feature | `/ecc:plan "Add auth"` | planner |
 | Design system architecture | `/ecc:plan` + architect agent | architect |
 | Write code with tests first | `/tdd` | tdd-guide |
@@ -866,9 +865,6 @@ Slash forms below are shown because they are still the fastest familiar entrypoi
 
 **Starting a new feature:**
 ```
-/feature-workflow                             → collects `Feature request` → `Current context` → `Constraints`
-                                              → then plans, implements, reviews, verifies
-                                              → asks before enabling multi-agent splits
 /ecc:plan "Add user authentication with OAuth"
                                               → planner creates implementation blueprint
 /tdd                                          → tdd-guide enforces write-tests-first
@@ -888,94 +884,6 @@ Slash forms below are shown because they are still the fastest familiar entrypoi
 /e2e                                          → e2e-runner: critical user flow tests
 /test-coverage                                → verify 80%+ coverage
 ```
-
----
-
-## 🧭 feature-workflow
-
-`feature-workflow` is ECC's reusable lane for turning a fuzzy feature request into a verified change set without forcing you to hand-craft the whole process every time.
-
-### ✨ What It Does
-
-- asks for missing inputs **one block at a time**: `Feature request` → `Current context` → `Constraints`
-- reads the repo before asking broad follow-up questions
-- applies `plan` discipline before code
-- hands implementation to `tdd-workflow`
-- asks before enabling multi-agent splits
-- closes the loop with `code-review` and `verification-loop`
-- records handoff notes and reusable pitfalls under `.claude/plan/`
-
-### 🧰 Installation
-
-You do **not** install `feature-workflow` separately. It ships with ECC.
-
-**Claude Code / slash-compatible installs**
-
-```text
-/plugin install everything-claude-code@everything-claude-code
-```
-
-Or use the OSS installer:
-
-```bash
-npm install
-./install.sh --profile full
-```
-
-**Codex app + CLI**
-
-```bash
-npm install && bash scripts/sync-ecc-to-codex.sh
-```
-
-That installs or syncs the skill into the normal ECC surfaces. No extra package is required for `feature-workflow`.
-
-### 🚀 How To Use It
-
-**Claude Code / slash-compatible harnesses**
-
-```text
-/feature-workflow
-```
-
-Then answer the prompts in order.
-
-**Codex**
-
-```text
-Use the `feature-workflow` skill.
-Communicate in Chinese.
-
-Feature request:
-[describe the feature]
-
-Current context:
-[describe relevant files, current behavior, errors, or limitations]
-
-Constraints:
-[describe performance, compatibility, delivery, or no-touch limits]
-```
-
-If you do not know everything up front:
-
-```text
-Use the `feature-workflow` skill.
-Communicate in Chinese.
-Do not write code yet.
-First collect missing inputs one block at a time and stop after each answer.
-```
-
-### 💬 Interaction Style
-
-By default, `feature-workflow` now asks in this order:
-
-1. `Feature request`
-2. `Current context`
-3. `Constraints`
-
-It does **not** dump the whole intake template in one shot unless you explicitly ask for a combined template.
-
----
 
 ## FAQ
 
@@ -1251,7 +1159,6 @@ Skills at `.agents/skills/` are auto-loaded by Codex:
 | everything-claude-code | Development conventions and patterns for the project |
 | exa-search | Neural search via Exa MCP for web, code, company research |
 | fal-ai-media | Unified media generation for images, video, and audio |
-| feature-workflow | Interactive end-to-end feature workflow with one-block-at-a-time intake, planning, TDD, review, verification, and anti-repeat checkpoints |
 | frontend-design | Distinctive, production-grade frontend design direction |
 | frontend-patterns | React/Next.js patterns |
 | frontend-slides | HTML presentations, PPTX conversion, visual style exploration |
@@ -1338,7 +1245,6 @@ OpenCode's plugin system is MORE sophisticated than Claude Code with 20+ event t
 | Command | Description |
 |---------|-------------|
 | `/plan` | Create implementation plan |
-| `/feature-workflow` | Interactive feature intake, plan, TDD, review, and verify loop |
 | `/tdd` | Enforce TDD workflow |
 | `/code-review` | Review code changes |
 | `/build-fix` | Fix build errors |

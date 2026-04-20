@@ -59,6 +59,14 @@
 
 ---
 
+## 最新消息
+
+### v1.10.0 — `feature-workflow`（2026年4月）
+
+- **🧭 `feature-workflow`** —— 新增可重用的功能交付工作流，支援 Codex 與相容斜線命令的 harness；會依序收集 `Feature request`、`Current context`、`Constraints`，先規劃再實作，最後用審查與驗證收尾。
+
+---
+
 ## 快速開始
 
 在 2 分鐘內快速上手：

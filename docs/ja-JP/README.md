@@ -69,6 +69,10 @@
 
 ## 新機能
 
+### v1.10.0 — `feature-workflow`（2026年4月）
+
+- **🧭 `feature-workflow`** — Codex と slash 互換ハーネス向けの再利用可能な機能開発フローを追加。`Feature request`、`Current context`、`Constraints` を順番に集め、実装前に計画を立て、最後はレビューと検証で閉じます。
+
 ### v1.4.1 — バグ修正（2026年2月）
 
 - **instinctインポート時のコンテンツ喪失を修正** — `/instinct-import`実行時に`parse_instinct_file()`がfrontmatter後のすべてのコンテンツ（Action、Evidence、Examplesセクション）を暗黙的に削除していた問題を修正。コミュニティ貢献者@ericcai0814により解決されました（[#148](https://github.com/affaan-m/everything-claude-code/issues/148), [#161](https://github.com/affaan-m/everything-claude-code/pull/161)）

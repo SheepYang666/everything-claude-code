@@ -82,6 +82,7 @@ Este repositório contém apenas o código. Os guias explicam tudo.
 
 ### v1.10.0 — Sincronização de Superfície, Fluxos Operacionais e ECC 2.0 Alpha (Abr 2026)
 
+- **🧭 `feature-workflow`** — Novo fluxo reutilizável para entrega de features no Codex e em harnesses compatíveis com slash. Ele coleta `Feature request`, `Current context` e `Constraints` em blocos separados, planeja antes de codar e fecha o ciclo com review e verificação.
 - **Superfície pública sincronizada com o repositório real** — metadados, contagens de catálogo, manifests de plugin e documentação de instalação agora refletem a superfície OSS que realmente é entregue.
 - **Expansão dos fluxos operacionais e externos** — `brand-voice`, `social-graph-ranker`, `customer-billing-ops`, `google-workspace-ops` e skills relacionadas fortalecem a trilha operacional dentro do mesmo sistema.
 - **Ferramentas de mídia e lançamento** — `manim-video`, `remotion-video-creation` e os fluxos de publicação social colocam explicadores técnicos e lançamento no mesmo repositório.

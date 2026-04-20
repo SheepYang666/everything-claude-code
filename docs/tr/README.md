@@ -81,6 +81,7 @@ Bu repository yalnızca ham kodu içerir. Rehberler her şeyi açıklıyor.
 
 ### v1.10.0 — Surface Sync, Operatör İş Akışları ve ECC 2.0 Alpha (Nis 2026)
 
+- **🧭 `feature-workflow`** — Codex ve slash uyumlu harness'lar için yeniden kullanılabilir yeni feature teslim akışı. `Feature request`, `Current context` ve `Constraints` alanlarını sırayla toplar, koddan önce plan yapar ve döngüyü review ile verification üzerinden kapatır.
 - **Public surface canlı repo ile senkronlandı** — metadata, katalog sayıları, plugin manifest'leri ve kurulum odaklı dokümanlar artık gerçek OSS yüzeyiyle eşleşiyor.
 - **Operatör ve dışa dönük iş akışları büyüdü** — `brand-voice`, `social-graph-ranker`, `customer-billing-ops`, `google-workspace-ops` ve ilgili operatör skill'leri aynı sistem içinde tamamlandı.
 - **Medya ve lansman araçları** — `manim-video`, `remotion-video-creation` ve sosyal yayın yüzeyleri teknik anlatım ve duyuru akışlarını aynı repo içine taşıdı.
